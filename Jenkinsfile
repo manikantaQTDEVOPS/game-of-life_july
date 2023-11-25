@@ -41,6 +41,18 @@ pipeline {
             }  
             
       }
-
+      // send mails about the project whether it is success or not
+      post {
+            success {
+                  mail subject: 'your project is effective'
+                        body: 'your project is affective'
+                        to: 'rajesh@qt.com'
+            }
+            failure {
+                  mail subject: 'your project is diffective'
+                       body: 'your project is diffective'
+                       to: 'rajesh@qt.com'
+            }
+      }
 
 }
