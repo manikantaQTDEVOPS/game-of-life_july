@@ -13,7 +13,15 @@ pipeline {
       // java-17 and maven-3.6.3 tools required for this project
       tools {
             maven 'maven-default'
-            jdk 'java-8'
+            jdk 'java-8'     
+      }
+
+      // added parameters to the maven goal
+      parameters { choice(name: 'GOAL' , choices: [ 'package', 'clean package',
+      'install', 'clean install']
+
+      )
+
       }
       // source code from the version control system
       stages {
@@ -27,7 +35,7 @@ pipeline {
 
             stage('build and package') {
                   steps {
-                        sh script: 'mvn clean package'
+                        sh script: "mvn ${params.GOAL}"
                   }
             }
 
