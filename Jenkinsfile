@@ -27,7 +27,7 @@ pipeline {
 
             stage('build and package') {
                   steps {
-                        sh script: 'mvn package'
+                        sh script: 'mvn clean package'
                   }
             }
 
@@ -35,8 +35,8 @@ pipeline {
 
             stage('reporting') {
                   steps {
-                        archiveArtifacts artifacts: '**/target/gameoflife-*.war'
-                        junit testResults: '**/target/surefire-reports/TEST-*xml'
+                        archiveArtifacts artifacts: '**/target/gameoflife.war'
+                        junit testResults: '**/surefire-reports/TEST-*.xml'
                   }
             }  
             
