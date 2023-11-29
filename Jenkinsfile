@@ -40,15 +40,8 @@ pipeline {
 
             stage('build and package') {
                   steps {
-                        // sh script: "mvn ${params.GOAL}"
-                        rtMavenDeployer (
-                    id: "GOF_DEPLOYER",
-                    serverId: "JFROG",
-                    releaseRepo: 'libs-snapshot-local',
-                    snapshotRepo: 'libs-snapshot-local'
-                        )
 
-                        rtMavenRun (
+                          rtMavenRun (
                     tool: 'maven-3.6', // Tool name from Jenkins configuration
                     pom: 'pom.xml',
                     goals: 'clean install',
@@ -56,7 +49,17 @@ pipeline {
                     //,
                     //buildName: "${JOB_NAME}",
                     //buildNumber: "${BUILD_ID}"
-                )
+                        // sh script: "mvn ${params.GOAL}"
+                          )
+                        rtMavenDeployer (
+                    id: "GOF_DEPLOYER",
+                    serverId: "JFROG",
+                    releaseRepo: 'libs-release',
+                    snapshotRepo: 'libs-release'
+                        )
+
+                   
+               
                 rtPublishBuildInfo (
                     serverId: "JFROG"
                 )
