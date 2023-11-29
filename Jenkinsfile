@@ -25,8 +25,8 @@ pipeline {
       }
       // source code from the version control system
       stages {
-            stage{
-                  steps{
+            stage('mvn version') {
+                  steps {
                         sh 'mvn --version'
                   }
             }
