@@ -1,6 +1,6 @@
 pipeline {
       // label is set for node1
-      agent { label 'JDK17' }
+      agent { label 'JDK-17' }
       // job is stop after 30min
       options { 
             retry(3)
@@ -12,7 +12,7 @@ pipeline {
       }
       // java-17 and maven-3.6.3 tools required for this project
       tools {
-            maven 'maven-default'
+            maven 'maven-3.6'
             jdk 'java-8'     
       }
 
@@ -25,6 +25,11 @@ pipeline {
       }
       // source code from the version control system
       stages {
+            stage{
+                  steps{
+                        sh 'mvn --version'
+                  }
+            }
             stage('source code') {
                   steps {
                         git url: 'https://github.com/manikantaQTDEVOPS/game-of-life_july.git',
@@ -35,7 +40,27 @@ pipeline {
 
             stage('build and package') {
                   steps {
-                        sh script: "mvn ${params.GOAL}"
+                        // sh script: "mvn ${params.GOAL}"
+                        rtMavenDeployer (
+                    id: "GOF_DEPLOYER",
+                    serverId: "JFROG",
+                    releaseRepo: 'libs-snapshot-local',
+                    snapshotRepo: 'libs-snapshot-local'
+                        )
+
+                        rtMavenRun (
+                    tool: 'maven-3.6', // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "GOF_DEPLOYER"
+                    //,
+                    //buildName: "${JOB_NAME}",
+                    //buildNumber: "${BUILD_ID}"
+                )
+                rtPublishBuildInfo (
+                    serverId: "JFROG"
+                )
+
                   }
             }
 
@@ -50,17 +75,16 @@ pipeline {
             
       }
       // send mails about the project whether it is success or not
-      post {
-            success {
-                  mail subject: 'your project is effective',
-                        body: 'your project is affective',
-                        to: 'rajesh@qt.com'
-            }
-            failure {
-                  mail subject: 'your project is diffective',
-                       body: 'your project is diffective',
-                       to: 'rajesh@qt.com'
-            }
+      // post {
+      //       success {
+      //             mail subject: 'your project is effective',
+      //                   body: 'your project is affective',
+      //                   to: 'rajesh@qt.com'
+      //       }
+      //       failure {
+      //             mail subject: 'your project is diffective',
+      //                  body: 'your project is diffective',
+      //                  to: 'rajesh@qt.com'
+            // }
       }
 
-}
