@@ -41,16 +41,16 @@ pipeline {
             stage('build and package') {
                   steps {
 
-                          rtMavenRun (
-                    tool: 'maven-3.6', // Tool name from Jenkins configuration
-                    pom: 'pom.xml',
-                    goals: 'clean install',
-                    deployerId: "GOF_DEPLOYER"
-                    //,
-                    //buildName: "${JOB_NAME}",
-                    //buildNumber: "${BUILD_ID}"
-                        // sh script: "mvn ${params.GOAL}"
-                          )
+                  //         rtMavenRun (
+                  //   tool: 'maven-3.6', // Tool name from Jenkins configuration
+                  //   pom: 'pom.xml',
+                  //   goals: 'clean install',
+                  //   deployerId: "GOF_DEPLOYER"
+                  //   //,
+                  //   //buildName: "${JOB_NAME}",
+                  //   //buildNumber: "${BUILD_ID}"
+                        sh script: "mvn ${params.GOAL}"
+                          
                         rtMavenDeployer (
                     id: "GOF_DEPLOYER",
                     serverId: "JFROG",
