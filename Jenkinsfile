@@ -54,8 +54,8 @@ pipeline {
                         rtMavenDeployer (
                     id: "GOF_DEPLOYER",
                     serverId: "JFROG",
-                    releaseRepo: 'libs-release',
-                    snapshotRepo: 'libs-release'
+                    releaseRepo: 'qt-libs-release',
+                    snapshotRepo: 'qt-libs-release'
                         )
 
                    
